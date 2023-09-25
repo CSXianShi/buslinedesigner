@@ -366,7 +366,8 @@ bld.component('tab-station', {
             },
             fileInput: VueReactivity.shallowRef(null),
             fileReader: VueReactivity.shallowRef(null),
-            chrome: true
+            chrome: true,
+            routeSearchResultGot: false,
         }
     },
     methods: {
@@ -614,6 +615,14 @@ bld.component('tab-station', {
                         new AMap.LngLat(this.nodes[this.selectedNode].lng, this.nodes[this.selectedNode].lat),
                         new AMap.LngLat(lng, lat)
                     );
+                    if(this.routeSearchResultGot !== null){
+                        setTimeout(() => {
+                            if(!this.routeSearchResultGot){
+                                this.$emit('toast', ['自动算路超时', '', '如果自动算路失败，请阅读 https://mp.weixin.qq.com/s/wAgdE5AkqfMvSTfV3tKjTg 中的解决办法', false]);
+                            }
+                            this.routeSearchResultGot = null;
+                        }, 2000);
+                    }
                 }
             }
 
@@ -647,6 +656,7 @@ bld.component('tab-station', {
         // newNode => autoSetRouteAhead
         // 新建节点后自动规划上一节点至当前站路径并搜索至下一节点路径（仅限自动设站模式）
         autoSetRouteAhead(result){
+            this.routeSearchResultGot = true;
             if(result.routes[0].steps.length){
                 var lastLngLat;
                 result.routes[0].steps.forEach(step => {
