@@ -617,6 +617,9 @@ const bld = Vue.createApp({
             if(lineFile){
                 this.lineFile = deepClone(lineFile);
             }
+            if(this.lineFile.fileVersion > 1){
+                this.showMessage(["读取线路", "", "当前打开的是高版本 BLD 所使用的新版文件格式。\n当前版本的 BLD 可能无法解析新版本线路文件。", false]);
+            }
             this.undoable = false;
             this.$refs.tabStation.loadLine();
         },
@@ -650,7 +653,6 @@ const bld = Vue.createApp({
                 return;
             }
             this.loadLine();
-            this.showMessage(["读取线路", "", "读取文件中的线路成功~"]);
         },
         uploadLine() {
             this.showModalConfirm("读取线路", "确定读取线路吗？现有线路内容将丢失，请确保已保存当前线路哦~", this.getFile);
