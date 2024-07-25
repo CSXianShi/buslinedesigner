@@ -271,7 +271,8 @@ const bld = Vue.createApp({
                 autohide: true
             },
             regions: {},
-            chelaileTempData: {}
+            chelaileTempData: {},
+            showUpYun: false,
         }
     },
     mounted() {
@@ -320,6 +321,12 @@ const bld = Vue.createApp({
             };
 
             this.showMessage(["正在使用自定义 Key", "", "如果加载地图出现问题，请检查设置中的自定义 Key 选项", false]);
+        } else {
+            this.showMessage(["未设置自定义 Key", "", "大部分功能将不可用。详见 https://mp.weixin.qq.com/s/wAgdE5AkqfMvSTfV3tKjTg", false]);
+        }
+
+        if(window.location.host == 'cdn.buslinedesigner.bobliu.tech'){
+            this.showUpYun = true;
         }
 
         this.$refs.tabStation.mapInit();
